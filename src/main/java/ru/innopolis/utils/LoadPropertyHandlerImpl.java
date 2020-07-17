@@ -1,4 +1,4 @@
-package ru.innopolis.jms;
+package ru.innopolis.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

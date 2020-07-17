@@ -1,4 +1,4 @@
-package ru.innopolis.jms;
+package ru.innopolis.utils;
 
 import java.io.IOException;
 import java.util.Map;

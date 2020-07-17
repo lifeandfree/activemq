@@ -1,4 +1,4 @@
-package ru.innopolis.jms;
+package ru.innopolis.utils;
 
 public interface PropertyHandler {
 

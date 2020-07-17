@@ -3,6 +3,8 @@ package ru.innopolis.jms;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.innopolis.utils.PropertyHandler;
+import ru.innopolis.utils.TransactionGson;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -22,12 +24,14 @@ public class ActiveMqJmsServiceSenderImpl implements MessageProducerService {
     private ConnectionFactory connectionFactory;
     private final PropertyHandler propertyHandler;
     private ConcurrentLinkedQueue<TransactionQueueRecord> transactionsQueue;
+    Long sleepTime;
 
     public ActiveMqJmsServiceSenderImpl(PropertyHandler propertyHandler) {
         logger.debug("init MessageProducerService");
         this.propertyHandler = propertyHandler;
         this.connectionFactory = connectionFactory();
         this.transactionsQueue = new ConcurrentLinkedQueue<>();
+        sleepTime = Long.parseLong(propertyHandler.getPropertyByKey(Constants.MESSAGE_BROKER_SLEEP));
     }
 
     private ConnectionFactory connectionFactory() {
@@ -46,40 +50,29 @@ public class ActiveMqJmsServiceSenderImpl implements MessageProducerService {
         logger.info("launchProcessing..");
 
         Runnable processing = () -> {
-
             logger.info("launchProcessing: new thread for processing is launched");
-
             while (true) {
                 while (!transactionsQueue.isEmpty()) {
                     logger.debug("send transaction");
-
-                    sendTransaction(transactionsQueue.poll()); // TODO
+                    sendTransaction(transactionsQueue.poll());
                 }
                 try {
-                    Long sleepTime = Long.parseLong(
-                            propertyHandler.getPropertyByKey(Constants.MESSAGE_BROKER_SLEEP));
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     logger.error(e);
                 }
             }
         };
-
         new Thread(processing).start();
     }
 
     private void sendTransaction(TransactionQueueRecord transactionQueueRecord) {
-
         logger.debug("sendTransaction: " + transactionQueueRecord.getMessageBrokerMessage() +
                 ". To topic: " + transactionQueueRecord.getTopic());
-
         try {
-            logger.trace("Create connection");
             Connection connection = connectionFactory.createConnection();
-            logger.trace("Start connection");
             connection.start();
 
-            logger.trace("Create session");
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             Destination destination = session.createQueue(transactionQueueRecord.getTopic());
@@ -91,12 +84,8 @@ public class ActiveMqJmsServiceSenderImpl implements MessageProducerService {
             message.setStringProperty("_type", transactionQueueRecord.getMessageBrokerMessage().getClass().toString().split(" ")[1]);
 
             producer.send(message);
-
-            logger.trace("Session close");
             session.close();
-            logger.trace("Connection close");
             connection.close();
-
         } catch (JMSException e) {
             logger.error(e);
         }

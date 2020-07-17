@@ -7,8 +7,8 @@ import ru.innopolis.jms.Constants;
 import ru.innopolis.jms.MessageBrokerMessage;
 import ru.innopolis.jms.MessageProducerService;
 import ru.innopolis.jms.MessageSample;
-import ru.innopolis.jms.PropertyHandler;
-import ru.innopolis.jms.PropertyHandlerImpl;
+import ru.innopolis.utils.PropertyHandler;
+import ru.innopolis.utils.PropertyHandlerImpl;
 
 /**
  * Main.

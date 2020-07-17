@@ -1,6 +1,5 @@
 package ru.innopolis.jms;
 
-import java.util.Random;
 import java.util.UUID;
 
 /**

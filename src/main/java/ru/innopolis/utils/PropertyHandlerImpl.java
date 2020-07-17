@@ -1,13 +1,12 @@
-package ru.innopolis.jms;
+package ru.innopolis.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.innopolis.jms.Constants;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 public class PropertyHandlerImpl implements PropertyHandler {
 
@@ -17,16 +16,10 @@ public class PropertyHandlerImpl implements PropertyHandler {
     private LoadPropertyHandler loadPropertyHandler;
 
     public PropertyHandlerImpl() {
-//        public PropertyHandlerImpl(PropertyDecryptor propertyDecryptor) throws IOException {
         this.properties = new ConcurrentHashMap<>();
         this.loadPropertyHandler = new LoadPropertyHandlerImpl();
         loadProperty();
         logger.debug("PropertyHandlerImpl constructed");
-    }
-
-    public PropertyHandlerImpl(Function<Map<String, String>, Map<String, String>> function) {
-        this.properties = new ConcurrentHashMap<>();
-        this.properties = function.apply(this.properties);
     }
 
     public void loadProperty() {
@@ -52,7 +45,6 @@ public class PropertyHandlerImpl implements PropertyHandler {
     public String getPropertyByKey(String key) {
         if (!properties.containsKey(key)) {
             return null;
-            //throw new PropertyNotExists("Property " + key + " is not found");
         }
         return properties.get(key);
     }
