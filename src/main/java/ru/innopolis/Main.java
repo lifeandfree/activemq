@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.innopolis.jms.ActiveMqJmsServiceSenderImpl;
 import ru.innopolis.jms.Constants;
+import ru.innopolis.jms.KafkaMessageProducerImpl;
 import ru.innopolis.jms.MessageBrokerMessage;
 import ru.innopolis.jms.MessageProducerService;
 import ru.innopolis.jms.MessageSample;
@@ -22,7 +23,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         PropertyHandler propertyHandler = new PropertyHandlerImpl();
-        MessageProducerService messageProducerService = new ActiveMqJmsServiceSenderImpl(propertyHandler);
+        MessageProducerService messageProducerService = new KafkaMessageProducerImpl(propertyHandler);
         messageProducerService.launchProcessing();
 
         for (int i = 1; i <= 25; i++) {

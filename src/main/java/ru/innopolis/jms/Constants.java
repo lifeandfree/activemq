@@ -6,4 +6,8 @@ public class Constants {
     public static final String JMS_ACTIVEMQ_PASSWORD = "mb.activemq.password";
     public static final String MESSAGE_BROKER_TJM = "message.broker.tjm";
     public static final String MESSAGE_BROKER_SLEEP = "message.broker.producer.sleep";
+
+    public static final String KAFKA_SASL_USERNAME = "mb.kafka.sasl.username";
+    public static final String KAFKA_SASL_PASSWORD = "mb.kafka.sasl.password";
+    public static final String KAFKA_BOOTSTRAP_ADDRESS = "mb.kafka.bootstrapAddress";
 }

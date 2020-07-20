@@ -34,6 +34,10 @@ public class PropertyHandlerImpl implements PropertyHandler {
         loadPropertyHandler.setProperty(this.properties, appProps, Constants.JMS_ACTIVEMQ_URL);
         loadPropertyHandler.setProperty(this.properties, appProps, Constants.JMS_ACTIVEMQ_USERNAME);
         loadPropertyHandler.setProperty(this.properties, appProps, Constants.JMS_ACTIVEMQ_PASSWORD);
+
+        loadPropertyHandler.setProperty(this.properties, appProps, Constants.KAFKA_BOOTSTRAP_ADDRESS);
+        loadPropertyHandler.setProperty(this.properties, appProps, Constants.KAFKA_SASL_USERNAME);
+        loadPropertyHandler.setProperty(this.properties, appProps, Constants.KAFKA_SASL_PASSWORD);
     }
 
     /**
